@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
     // Load scene by name
     public void PlayGameByName(string sceneName)
     {
-        SceneManager.LoadScene("GameplayTest");
+        SceneManager.LoadScene(sceneName);
     }
 
     // Quit application
