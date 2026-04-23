@@ -11,11 +11,9 @@ GameObject:
   - component: {fileID: 8149224192879949787}
   - component: {fileID: 2694024021737169842}
   - component: {fileID: 5709044273403965847}
-  - component: {fileID: 7936060401931218022}
-  - component: {fileID: -8951706054329346465}
-  - component: {fileID: 9028808275751073203}
+  - component: {fileID: 8653309506520500018}
   m_Layer: 5
-  m_Name: Battery_Placeholder
+  m_Name: BatteryImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4157096977509945895}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -38,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 210.961, y: 121.338}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2694024021737169842
 CanvasRenderer:
@@ -78,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7936060401931218022
+--- !u!114 &8653309506520500018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,40 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4157096977509945895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7ef7f422dd54814d8784fcedaa7d758, type: 3}
+  m_Script: {fileID: 11500000, guid: f3770cceba81ffe43a519c9a546e6119, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Drag
+  m_EditorClassIdentifier: Assembly-CSharp::DragChallenge
   _itemName: Battery
-  _placedSprite: {fileID: 0}
---- !u!114 &-8951706054329346465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157096977509945895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: 200
-  m_PreferredHeight: 200
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!225 &9028808275751073203
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157096977509945895}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0

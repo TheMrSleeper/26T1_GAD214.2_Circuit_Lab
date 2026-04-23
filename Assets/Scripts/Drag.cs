@@ -2,98 +2,49 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Drag : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private string _itemName;
     public string ItemName => _itemName;
 
-    [SerializeField] private Sprite _placedSprite;
-    public Sprite PlacedSprite => _placedSprite;
+    [SerializeField] private float _dragAlpha = 0.5f;
 
-    public bool WasDroppedCorrectly { get; set; }
+    private Image _image;
+    private Vector3 _startingPos;
 
-    private Canvas _canvas;
-    private RectTransform _rectTransform;
-    private CanvasGroup _canvasGroup;
-    private LayoutElement _layoutElement;
-
-    private Transform _originalParent;
-    private int _originalSiblingIndex;
-    private GameObject _placeholder;
-
-    private void Awake()
+    private void Start()
     {
-        _canvas = GetComponentInParent<Canvas>();
-        _rectTransform = GetComponent<RectTransform>();
-        _canvasGroup = GetComponent<CanvasGroup>();
-        _layoutElement = GetComponent<LayoutElement>();
-
-        if (_canvasGroup == null)
-            _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-
-        if (_layoutElement == null)
-            _layoutElement = gameObject.AddComponent<LayoutElement>();
+        _image = GetComponent<Image>();
+        _startingPos = transform.localPosition;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        WasDroppedCorrectly = false;
+        _image.raycastTarget = false;
 
-        _originalParent = transform.parent;
-        _originalSiblingIndex = transform.GetSiblingIndex();
-
-        CreatePlaceholder();
-
-        transform.SetParent(_canvas.transform, true);
-        transform.SetAsLastSibling();
-
-        _canvasGroup.blocksRaycasts = false;
-        _canvasGroup.alpha = 0.35f;
+        SetAlpha(_dragAlpha);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.position = eventData.position;
+        transform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _canvasGroup.blocksRaycasts = true;
+        _image.raycastTarget = true;
 
-        if (WasDroppedCorrectly)
-        {
-            if (_placeholder != null)
-                Destroy(_placeholder);
+        // Restore full opacity
+        SetAlpha(1f);
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_originalParent as RectTransform);
-            gameObject.SetActive(false);
-            return;
-        }
-
-        transform.SetParent(_originalParent, false);
-        transform.SetSiblingIndex(_originalSiblingIndex);
-        _rectTransform.localScale = Vector3.one;
-        _canvasGroup.alpha = 1f;
-
-        if (_placeholder != null)
-            Destroy(_placeholder);
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_originalParent as RectTransform);
+        // Return to original position
+        _image.rectTransform.localPosition = _startingPos;
     }
 
-    private void CreatePlaceholder()
+    private void SetAlpha(float alpha)
     {
-        _placeholder = new GameObject("Placeholder", typeof(RectTransform), typeof(LayoutElement));
-        _placeholder.transform.SetParent(_originalParent, false);
-        _placeholder.transform.SetSiblingIndex(_originalSiblingIndex);
-
-        RectTransform placeholderRect = _placeholder.GetComponent<RectTransform>();
-        placeholderRect.localScale = Vector3.one;
-
-        LayoutElement placeholderLayout = _placeholder.GetComponent<LayoutElement>();
-        placeholderLayout.preferredWidth = _layoutElement.preferredWidth > 0 ? _layoutElement.preferredWidth : _rectTransform.rect.width;
-        placeholderLayout.preferredHeight = _layoutElement.preferredHeight > 0 ? _layoutElement.preferredHeight : _rectTransform.rect.height;
-        placeholderLayout.flexibleWidth = 0;
-        placeholderLayout.flexibleHeight = 0;
+        Color c = _image.color;
+        c.a = alpha;
+        _image.color = c;
     }
 }

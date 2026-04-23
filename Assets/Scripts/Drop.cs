@@ -7,42 +7,75 @@ public class Drop : MonoBehaviour, IDropHandler
     [SerializeField] private string _requestedItem;
     public string RequestedItem => _requestedItem;
 
-    [SerializeField] private Image _displayImage;
+    public string CurrentItemName { get; private set; } = "";
 
-    private bool _isFilled = false;
-    public bool IsFilled => _isFilled;
+    // Optional parent for spawned items. If left empty, this drop zone is used.
+    [SerializeField] private Transform _spawnParent;
+
+    private void Awake()
+    {
+        if (_spawnParent == null)
+        {
+            _spawnParent = transform;
+        }
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
-        Drag draggedItem = eventData.pointerDrag != null
-            ? eventData.pointerDrag.GetComponent<Drag>()
-            : null;
+        if (eventData.pointerDrag == null)
+            return;
+
+        Drag draggedItem = eventData.pointerDrag.GetComponent<Drag>();
 
         if (draggedItem == null)
             return;
 
-        bool placed = PlaceItem(draggedItem);
-        draggedItem.WasDroppedCorrectly = placed;
+        // Remember what item is now in this slot.
+        CurrentItemName = draggedItem.ItemName;
+
+        // Accept any draggable item, regardless of correctness.
+        ReplaceDroppedCopy(eventData.pointerDrag);
     }
 
-    public bool PlaceItem(Drag draggedItem)
+    private void ReplaceDroppedCopy(GameObject sourceObject)
     {
-        if (_isFilled)
-            return false;
-
-        if (draggedItem == null || draggedItem.ItemName != _requestedItem)
-            return false;
-
-        if (_displayImage != null)
+        // Remove any item already placed in this slot.
+        for (int i = _spawnParent.childCount - 1; i >= 0; i--)
         {
-            Image draggedImage = draggedItem.GetComponent<Image>();
-            _displayImage.sprite = draggedItem.PlacedSprite != null ? draggedItem.PlacedSprite : draggedImage.sprite;
-            _displayImage.enabled = true;
-            _displayImage.preserveAspect = true;
-            _displayImage.color = Color.white;
+            Destroy(_spawnParent.GetChild(i).gameObject);
         }
 
-        _isFilled = true;
-        return true;
+        // Spawn the new placed copy.
+        GameObject copy = Instantiate(sourceObject, _spawnParent);
+
+        RectTransform copyRect = copy.GetComponent<RectTransform>();
+        copyRect.position = transform.position;
+
+        // Force the placed copy to be fully visible.
+        Image image = copy.GetComponent<Image>();
+        if (image != null)
+        {
+            Color c = image.color;
+            c.a = 1f;
+            image.color = c;
+            image.raycastTarget = false;
+        }
+
+        // Make the placed copy non-draggable.
+        Drag dragComponent = copy.GetComponent<Drag>();
+        if (dragComponent != null)
+        {
+            Destroy(dragComponent);
+        }
+    }
+
+    public bool IsCorrect()
+    {
+        return !string.IsNullOrEmpty(CurrentItemName) && CurrentItemName == _requestedItem;
+    }
+
+    public bool HasItem()
+    {
+        return !string.IsNullOrEmpty(CurrentItemName);
     }
 }
