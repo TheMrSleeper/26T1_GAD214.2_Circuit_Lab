@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -5,9 +6,34 @@ using UnityEngine.UI;
 public class Drop : MonoBehaviour, IDropHandler
 {
     [SerializeField] private string _requestedItem;
+    [SerializeField] private TMP_Text _guideLabel;
     public string RequestedItem => _requestedItem;
 
     public string CurrentItemName { get; private set; } = "";
+
+    public void SetRequestedItem(string itemName)
+    {
+        _requestedItem = itemName;
+        CurrentItemName = "";
+
+        if (_guideLabel != null)
+        {
+            _guideLabel.text = FormatItemName(itemName);
+        }
+    }
+
+    private string FormatItemName(string itemName)
+    {
+        switch (itemName)
+        {
+            case "battery": return "Battery";
+            case "lamp": return "Lamp";
+            case "switch": return "Switch";
+            case "resistor": return "Resistor";
+            case "fuse": return "Fuse";
+            default: return itemName;
+        }
+    }
 
     // Optional parent for spawned items. If left empty, this drop zone is used.
     [SerializeField] private Transform _spawnParent;
@@ -51,20 +77,18 @@ public class Drop : MonoBehaviour, IDropHandler
         RectTransform copyRect = copy.GetComponent<RectTransform>();
         copyRect.position = transform.position;
 
-        // Force the placed copy to be fully visible.
+        // Disable the cloned hitbox so the placed copy does not block future drops.
         Image image = copy.GetComponent<Image>();
         if (image != null)
         {
-            Color c = image.color;
-            c.a = 1f;
-            image.color = c;
             image.raycastTarget = false;
         }
 
-        // Make the placed copy non-draggable.
+        // Restore only the visible art to full opacity, then remove dragging.
         Drag dragComponent = copy.GetComponent<Drag>();
         if (dragComponent != null)
         {
+            dragComponent.ForceFullVisualAlpha();
             Destroy(dragComponent);
         }
     }

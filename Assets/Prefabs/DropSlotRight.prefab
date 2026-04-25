@@ -90,7 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d532b52332ba0fb43bfb56e5d7565104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroppableChallenge
-  _requestedItem: Resistor
+  _requestedItem: 
+  _guideLabel: {fileID: 4372608777246018823}
   _spawnParent: {fileID: 8312970671326526805}
 --- !u!1 &5600691874745987806
 GameObject:

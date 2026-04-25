@@ -7,22 +7,36 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     [SerializeField] private string _itemName;
     public string ItemName => _itemName;
 
+    [Header("Images")]
+    [SerializeField] private Image _raycastImage; // Transparent hitbox image
+    [SerializeField] private Image _visualImage;  // Actual visible component image
+
+    [Header("Drag Feedback")]
     [SerializeField] private float _dragAlpha = 0.5f;
 
-    private Image _image;
     private Vector3 _startingPos;
+    private float _originalVisualAlpha = 1f;
+
+    private void Awake()
+    {
+        if (_raycastImage == null)
+            _raycastImage = GetComponent<Image>();
+
+        if (_visualImage != null)
+            _originalVisualAlpha = _visualImage.color.a;
+    }
 
     private void Start()
     {
-        _image = GetComponent<Image>();
         _startingPos = transform.localPosition;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _image.raycastTarget = false;
+        if (_raycastImage != null)
+            _raycastImage.raycastTarget = false;
 
-        SetAlpha(_dragAlpha);
+        SetVisualAlpha(_dragAlpha);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -32,19 +46,26 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _image.raycastTarget = true;
+        if (_raycastImage != null)
+            _raycastImage.raycastTarget = true;
 
-        // Restore full opacity
-        SetAlpha(1f);
+        SetVisualAlpha(_originalVisualAlpha);
 
-        // Return to original position
-        _image.rectTransform.localPosition = _startingPos;
+        transform.localPosition = _startingPos;
     }
 
-    private void SetAlpha(float alpha)
+    public void ForceFullVisualAlpha()
     {
-        Color c = _image.color;
+        SetVisualAlpha(1f);
+    }
+
+    private void SetVisualAlpha(float alpha)
+    {
+        if (_visualImage == null)
+            return;
+
+        Color c = _visualImage.color;
         c.a = alpha;
-        _image.color = c;
+        _visualImage.color = c;
     }
 }

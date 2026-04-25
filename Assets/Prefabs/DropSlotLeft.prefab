@@ -227,7 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d532b52332ba0fb43bfb56e5d7565104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroppableChallenge
-  _requestedItem: Switch
+  _requestedItem: 
+  _guideLabel: {fileID: 2643908656515905206}
   _spawnParent: {fileID: 1844185522907982746}
 --- !u!1 &9118969672676197503
 GameObject:

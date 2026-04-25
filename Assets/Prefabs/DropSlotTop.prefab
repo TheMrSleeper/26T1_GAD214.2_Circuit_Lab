@@ -262,5 +262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d532b52332ba0fb43bfb56e5d7565104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroppableChallenge
-  _requestedItem: Battery
+  _requestedItem: 
+  _guideLabel: {fileID: 8396589048481021863}
   _spawnParent: {fileID: 1466645400566550800}
