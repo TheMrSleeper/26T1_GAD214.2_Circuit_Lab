@@ -152,7 +152,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1017316434}
   - {fileID: 89766466}
   - {fileID: 888597868}
   - {fileID: 1145087799}
@@ -184,7 +183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &50446653
 RectTransform:
   m_ObjectHideFlags: 0
@@ -192,13 +191,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50446652}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.8191, y: 3.850489, z: 1.8191}
+  m_LocalScale: {x: 1.8191, y: 3.8504887, z: 1.8191}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1357448303}
-  m_Father: {fileID: 835841312}
+  m_Father: {fileID: 1017316434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -249,7 +248,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 835841311}
+      - m_Target: {fileID: 1017316433}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -857,8 +856,8 @@ MonoBehaviour:
   _levelsRoot: {fileID: 2045704614}
   _resultText: {fileID: 597507028}
   _nextLevelButton: {fileID: 146308686}
-  _mascot: {fileID: 1020580760}
-  _mascotDisplayTime: 2
+  _sparky: {fileID: 1020580760}
+  _sparkyDialogue: {fileID: 457498258}
   _gameStartController: {fileID: 768852152}
 --- !u!4 &119428755
 Transform:
@@ -1130,7 +1129,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146308686}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000000041439936}
   m_LocalScale: {x: 0.31481883, y: 0.59507847, z: 0.39676243}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1139,7 +1138,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 8}
+  m_AnchoredPosition: {x: 0.0000023841858, y: 0}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!82 &146308688
@@ -1399,6 +1398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUIReference
   timerText: {fileID: 1841143392}
+  startBlockerPanel: {fileID: 1017316433}
 --- !u!114 &183872752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,14 +1416,19 @@ MonoBehaviour:
   - {fileID: 1989406609}
   - {fileID: 1466774147}
   - {fileID: 1753966958}
-  _battery: battery
-  _lamp: lamp
-  _switch: switch
+  _requiredComponents:
+  - battery
+  - switch
   _optionalComponents:
   - resistor
   - fuse
   - lamp
   - battery
+  _useAtLeastOneOfRule: 1
+  _atLeastOneOfComponents:
+  - lamp
+  - resistor
+  _maxSwitches: 1
   _randomizeOnEnable: 1
 --- !u!1 &194180312
 GameObject:
@@ -1943,6 +1948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUIReference
   timerText: {fileID: 1786084841}
+  startBlockerPanel: {fileID: 1017316433}
 --- !u!114 &291072613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1960,14 +1966,20 @@ MonoBehaviour:
   - {fileID: 2021038598}
   - {fileID: 1728846360}
   - {fileID: 2075912292}
-  _battery: battery
-  _lamp: lamp
-  _switch: switch
+  _requiredComponents:
+  - battery
+  - lamp
+  - switch
   _optionalComponents:
   - resistor
   - fuse
   - lamp
   - battery
+  _useAtLeastOneOfRule: 0
+  _atLeastOneOfComponents:
+  - lamp
+  - resistor
+  _maxSwitches: 1
   _randomizeOnEnable: 1
 --- !u!224 &318930434 stripped
 RectTransform:
@@ -3055,6 +3067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUIReference
   timerText: {fileID: 623016512}
+  startBlockerPanel: {fileID: 1017316433}
 --- !u!114 &428359910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3072,18 +3085,93 @@ MonoBehaviour:
   - {fileID: 1795115367}
   - {fileID: 2230934659812209486}
   - {fileID: 2230934660286743530}
-  _battery: battery
-  _lamp: lamp
-  _switch: switch
+  _requiredComponents:
+  - battery
+  - lamp
+  - switch
   _optionalComponents:
   - resistor
   - fuse
+  _useAtLeastOneOfRule: 0
+  _atLeastOneOfComponents:
+  - lamp
+  - resistor
+  _maxSwitches: 1
   _randomizeOnEnable: 1
 --- !u!224 &437219909 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4114825082494377767, guid: ca01accb3049d3e4f8bf91870c561899, type: 3}
   m_PrefabInstance: {fileID: 1754085999}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &457498257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 457498259}
+  - component: {fileID: 457498258}
+  m_Layer: 0
+  m_Name: SparkyDialogueController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &457498258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457498257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcac5bac3edb252459884f5cb32c24da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SparkyDialogueController
+  _sparkyRoot: {fileID: 1020580760}
+  _speechText: {fileID: 597507028}
+  _levelIntroMessages:
+  - Here is a basic circuit. As you can see it requires one switch, and at least
+    one battery (power source) and lamp (load) to operate. Drag in those elements
+    now and remember this is timed so try and beat your friends!
+  - In a scientific diagram, each of the parts of a circuit are represented by a
+    specific symbol, like the ones in this level. I've left the names in so you can
+    tell what they're supposed to be. See if you can work out what each of the symbols
+    are and complete this circuit using the correct ones!
+  - 'Now for something a bit more challenging! Did you know that load doesn''t have
+    to be a lamp? It actually refers to anything that converts electrical energy
+    into something else (like light or heat). See if you can remember what the symbols
+    are without their names and complete this circuit correctly! '
+  _incorrectMessage: 'Oops! Not quite.
+
+    Looks like you only have {0}/{1} correct.
+
+    Remember,
+    a closed circuit needs at least one switch, one power sauce, and one load to
+    be complete.'
+  _correctMessage: 'Well Done!
+
+    You got all the components correct!'
+  _autoHideTime: 4
+--- !u!4 &457498259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457498257}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &468699607
 GameObject:
   m_ObjectHideFlags: 0
@@ -4192,16 +4280,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597507026}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25874686, y: 0.21640798, z: 0.39676243}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00000015539976}
+  m_LocalScale: {x: 0.25874686, y: 0.21640797, z: 0.39676243}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1471197603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 2}
+  m_SizeDelta: {x: 80, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597507028
 MonoBehaviour:
@@ -4223,9 +4311,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a basic circuit, as you can see it requires one light, one battery,
-    one resistor and one switch to operate. Drag in those elements now and remember
-    this is timed so try and beat your friends!
+  m_text: Here is a basic circuit. As you can see it requires one switch, and at
+    least one battery (power source) and lamp (load) to operate. Drag in those elements
+    now and remember this is timed so try and beat your friends!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4252,12 +4340,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 18
   m_fontSizeBase: 20
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 16
+  m_fontSizeMax: 18
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -5256,9 +5344,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameStartController
   introPanel: {fileID: 1147258059}
   timerText: {fileID: 623016512}
-  levelsRoot: {fileID: 0}
+  levelsRoot: {fileID: 2045704614}
   introAudioSource: {fileID: 1783096598}
   gameplayAudioSource: {fileID: 1807169257}
+  sparkyDialogue: {fileID: 457498258}
   elapsedTime: 0
 --- !u!4 &768852153
 Transform:
@@ -5700,42 +5789,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42aeaf70510c8ff45a6bb2605e440751, type: 3}
---- !u!1 &835841311
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 835841312}
-  m_Layer: 5
-  m_Name: Partthree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &835841312
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835841311}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 50446653}
-  m_Father: {fileID: 1147258060}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &837640594 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7237208569108270071, guid: 42aeaf70510c8ff45a6bb2605e440751, type: 3}
@@ -6974,12 +7027,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017316433}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 31748826}
+  m_Children:
+  - {fileID: 50446653}
+  m_Father: {fileID: 1788401490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7307,7 +7361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1020580761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7915,7 +7969,6 @@ RectTransform:
   m_Children:
   - {fileID: 31748826}
   - {fileID: 667629933}
-  - {fileID: 835841312}
   m_Father: {fileID: 1788401490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -9650,8 +9703,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5, y: 12.5}
-  m_SizeDelta: {x: -15, y: -35}
+  m_AnchoredPosition: {x: 1.9000015, y: 10.200001}
+  m_SizeDelta: {x: -35.3357, y: -56.4951}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1471197604
 CanvasRenderer:
@@ -12148,6 +12201,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2045704614}
+  - {fileID: 1017316434}
   - {fileID: 1147258060}
   - {fileID: 1020580761}
   m_Father: {fileID: 0}
@@ -14314,7 +14368,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 835841311}
+      - m_Target: {fileID: 50446652}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -14330,6 +14384,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 768852152}
+        m_TargetAssemblyTypeName: GameStartController, Assembly-CSharp
+        m_MethodName: ShowCurrentLevelIntro
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16577,3 +16643,4 @@ SceneRoots:
   - {fileID: 1360638158}
   - {fileID: 768852153}
   - {fileID: 119428755}
+  - {fileID: 457498259}

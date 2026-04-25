@@ -14,10 +14,15 @@ public class GameStartController : MonoBehaviour
     public AudioSource introAudioSource;
     public AudioSource gameplayAudioSource;
 
+    [Header("Mascot")]
+    public SparkyDialogueController sparkyDialogue;
+
     [Header("Timer")]
     public float elapsedTime = 0f;
+
     private bool timerRunning = false;
     private bool gameStarted = false;
+    private LevelUIReference currentLevelUI;
 
     private void Start()
     {
@@ -32,15 +37,14 @@ public class GameStartController : MonoBehaviour
         if (gameplayAudioSource != null)
             gameplayAudioSource.Stop();
 
+        if (sparkyDialogue != null)
+            sparkyDialogue.Hide();
+
         Transform activeLevel = GetActiveLevelPanel();
         if (activeLevel != null)
-        {
-            SetTimerFromLevel(activeLevel, true);
-        }
+            PrepareLevel(activeLevel, showSparky: false);
         else
-        {
             UpdateTimerUI();
-        }
     }
 
     private void Update()
@@ -54,23 +58,57 @@ public class GameStartController : MonoBehaviour
 
     public void StartGame()
     {
-        if (gameStarted)
-            return;
+        if (!gameStarted)
+        {
+            gameStarted = true;
 
-        gameStarted = true;
+            if (introPanel != null)
+                introPanel.SetActive(false);
 
-        if (introPanel != null)
-            introPanel.SetActive(false);
+            if (introAudioSource != null && introAudioSource.isPlaying)
+                introAudioSource.Stop();
 
-        if (introAudioSource != null && introAudioSource.isPlaying)
-            introAudioSource.Stop();
+            if (gameplayAudioSource != null && !gameplayAudioSource.isPlaying)
+                gameplayAudioSource.Play();
+        }
 
-        if (gameplayAudioSource != null && !gameplayAudioSource.isPlaying)
-            gameplayAudioSource.Play();
+        if (currentLevelUI != null && currentLevelUI.startBlockerPanel != null)
+            currentLevelUI.startBlockerPanel.SetActive(false);
+
+        if (sparkyDialogue != null)
+            sparkyDialogue.Hide();
 
         Time.timeScale = 1f;
         timerRunning = true;
         UpdateTimerUI();
+    }
+
+    public void PrepareLevel(Transform levelRoot, bool showSparky = true)
+    {
+        Time.timeScale = 0f;
+        timerRunning = false;
+
+        SetTimerFromLevel(levelRoot, true);
+
+        if (currentLevelUI != null && currentLevelUI.startBlockerPanel != null)
+            currentLevelUI.startBlockerPanel.SetActive(true);
+
+        if (showSparky && sparkyDialogue != null && currentLevelUI != null)
+            sparkyDialogue.ShowLevelIntro(levelRoot.GetSiblingIndex());
+    }
+
+    public void ShowCurrentLevelIntro()
+    {
+        if (introPanel != null)
+            introPanel.SetActive(false);
+
+        if (currentLevelUI != null && currentLevelUI.startBlockerPanel != null)
+            currentLevelUI.startBlockerPanel.SetActive(true);
+
+        Transform activeLevel = GetActiveLevelPanel();
+
+        if (activeLevel != null)
+            sparkyDialogue.ShowLevelIntro(activeLevel.GetSiblingIndex());
     }
 
     public void FinishLevel()
@@ -79,43 +117,26 @@ public class GameStartController : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void ResumeForNextLevel()
-    {
-        Time.timeScale = 1f;
-        timerRunning = true;
-
-        if (gameplayAudioSource != null && !gameplayAudioSource.isPlaying)
-            gameplayAudioSource.Play();
-
-        UpdateTimerUI();
-    }
-
-    public void SetTimerText(TMP_Text newTimerText, bool resetElapsedTime = true)
-    {
-        timerText = newTimerText;
-
-        if (resetElapsedTime)
-        {
-            elapsedTime = 0f;
-        }
-
-        UpdateTimerUI();
-    }
-
     public void SetTimerFromLevel(Transform levelRoot, bool resetElapsedTime = true)
     {
         if (levelRoot == null)
             return;
 
-        LevelUIReference levelUI = levelRoot.GetComponent<LevelUIReference>();
-        if (levelUI == null || levelUI.timerText == null)
+        currentLevelUI = levelRoot.GetComponent<LevelUIReference>();
+
+        if (currentLevelUI == null || currentLevelUI.timerText == null)
         {
             Debug.LogWarning($"Level {levelRoot.name} is missing LevelUIReference or timerText.");
             timerText = null;
             return;
         }
 
-        SetTimerText(levelUI.timerText, resetElapsedTime);
+        timerText = currentLevelUI.timerText;
+
+        if (resetElapsedTime)
+            elapsedTime = 0f;
+
+        UpdateTimerUI();
     }
 
     private Transform GetActiveLevelPanel()

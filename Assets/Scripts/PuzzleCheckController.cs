@@ -12,10 +12,11 @@ public class PuzzleCheckController : MonoBehaviour
     [SerializeField] private GameObject _nextLevelButton;
 
     [Header("Mascot")]
-    [SerializeField] private GameObject _mascot;
-    [SerializeField] private float _mascotDisplayTime = 2f;
+    [SerializeField] private GameObject _sparky;
+    //[SerializeField] private float _mascotDisplayTime = 2f;
+    [SerializeField] private SparkyDialogueController _sparkyDialogue;
 
-    private Coroutine _mascotRoutine;
+    //private Coroutine _mascotRoutine;
 
     [Header("Game Flow")]
     [SerializeField] private GameStartController _gameStartController;
@@ -25,8 +26,8 @@ public class PuzzleCheckController : MonoBehaviour
         if (_nextLevelButton != null)
             _nextLevelButton.SetActive(false);
 
-        if (_mascot != null)
-            _mascot.SetActive(false);
+        if (_sparky != null)
+            _sparky.SetActive(false);
     }
 
     public void CheckPuzzle()
@@ -94,7 +95,8 @@ public class PuzzleCheckController : MonoBehaviour
             if (_nextLevelButton != null)
                 _nextLevelButton.SetActive(hasNextLevel);
 
-            ShowMascot(permanent: true);
+            if (_sparkyDialogue != null)
+                _sparkyDialogue.ShowCorrectMessage(correctCount, totalCount);
 
             if (_gameStartController != null)
                 _gameStartController.FinishLevel();
@@ -107,50 +109,51 @@ public class PuzzleCheckController : MonoBehaviour
             if (_nextLevelButton != null)
                 _nextLevelButton.SetActive(false);
 
-            ShowMascot(permanent: false);
+            if (_sparkyDialogue != null)
+                _sparkyDialogue.ShowIncorrectMessage(correctCount, totalCount);
         }
     }
 
-    private void ShowMascot(bool permanent)
-    {
-        if (_mascot == null)
-            return;
+    //private void ShowMascot(bool permanent)
+    //{
+    //    if (_sparky == null)
+    //        return;
 
-        _mascot.SetActive(true);
+    //    _sparky.SetActive(true);
 
-        if (_mascotRoutine != null)
-        {
-            StopCoroutine(_mascotRoutine);
-            _mascotRoutine = null;
-        }
+    //    if (_mascotRoutine != null)
+    //    {
+    //        StopCoroutine(_mascotRoutine);
+    //        _mascotRoutine = null;
+    //    }
 
-        if (!permanent)
-        {
-            _mascotRoutine = StartCoroutine(HideMascotAfterDelay());
-        }
-    }
+    //    if (!permanent)
+    //    {
+    //        _mascotRoutine = StartCoroutine(HideMascotAfterDelay());
+    //    }
+    //}
 
-    private IEnumerator HideMascotAfterDelay()
-    {
-        yield return new WaitForSeconds(_mascotDisplayTime);
+    //private IEnumerator HideMascotAfterDelay()
+    //{
+    //    yield return new WaitForSeconds(_mascotDisplayTime);
 
-        if (_mascot != null)
-            _mascot.SetActive(false);
+    //    if (_sparky != null)
+    //        _sparky.SetActive(false);
 
-        _mascotRoutine = null;
-    }
+    //    _mascotRoutine = null;
+    //}
 
-    private void HideMascotImmediately()
-    {
-        if (_mascotRoutine != null)
-        {
-            StopCoroutine(_mascotRoutine);
-            _mascotRoutine = null;
-        }
+    //private void HideMascotImmediately()
+    //{
+    //    if (_mascotRoutine != null)
+    //    {
+    //        StopCoroutine(_mascotRoutine);
+    //        _mascotRoutine = null;
+    //    }
 
-        if (_mascot != null)
-            _mascot.SetActive(false);
-    }
+    //    if (_sparky != null)
+    //        _sparky.SetActive(false);
+    //}
 
     public void GoToNextLevel()
     {
@@ -173,7 +176,8 @@ public class PuzzleCheckController : MonoBehaviour
             if (_nextLevelButton != null)
                 _nextLevelButton.SetActive(false);
 
-            HideMascotImmediately();
+            if (_sparkyDialogue != null)
+                _sparkyDialogue.Hide();
             return;
         }
 
@@ -188,12 +192,12 @@ public class PuzzleCheckController : MonoBehaviour
         if (_resultText != null)
             _resultText.text = "";
 
-        HideMascotImmediately();
+        if (_sparkyDialogue != null)
+            _sparkyDialogue.Hide();
 
         if (_gameStartController != null)
         {
-            _gameStartController.SetTimerFromLevel(nextLevel, true);
-            _gameStartController.ResumeForNextLevel();
+            _gameStartController.PrepareLevel(nextLevel);
         }
     }
 
